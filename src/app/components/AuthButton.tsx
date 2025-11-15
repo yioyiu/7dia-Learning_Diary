@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { supabase } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
-import type { User } from '@supabase/supabase-js'
+import type { User, Session } from '@supabase/supabase-js'
 
 export function AuthButton() {
   const [user, setUser] = useState<User | null>(null)
@@ -48,7 +48,7 @@ export function AuthButton() {
     // 监听认证状态变化
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event: any, session) => {
+    } = supabase.auth.onAuthStateChange((_event: any, session: Session | null) => {
       if (mountedRef.current) {
         setUser(session?.user ?? null)
         setLoading(false)

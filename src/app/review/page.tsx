@@ -30,43 +30,43 @@ export default function ReviewPage() {
   const [selectedMonth, setSelectedMonth] = useState(currentMonth)
 
   useEffect(() => {
+    async function loadData() {
+      setLoading(true)
+      setError(null)
+      try {
+        const monthlyRecords = await getMonthlyRecordsForReview(
+          currentYear,
+          currentMonth
+        )
+        setRecords(monthlyRecords)
+        
+        // 自动从摘要中提取关键词
+        if (monthlyRecords.length > 0) {
+          setExtractingKeywords(true)
+          try {
+            const extractedKeywords = await extractKeywordsFromRecords(monthlyRecords)
+            setKeywords(extractedKeywords)
+          } catch (err) {
+            console.error('Failed to extract keywords:', err)
+            // 提取关键词失败不影响主流程
+          } finally {
+            setExtractingKeywords(false)
+          }
+        } else {
+          setKeywords([])
+        }
+      } catch (err: any) {
+        // 格式化错误信息，避免显示原始错误对象
+        const errorMessage = err?.message || err?.error?.message || '加载数据失败'
+        setError(errorMessage)
+        console.error('Failed to load monthly records:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    
     loadData()
   }, [currentYear, currentMonth])
-
-  async function loadData() {
-    setLoading(true)
-    setError(null)
-    try {
-      const monthlyRecords = await getMonthlyRecordsForReview(
-        currentYear,
-        currentMonth
-      )
-      setRecords(monthlyRecords)
-      
-      // 自动从摘要中提取关键词
-      if (monthlyRecords.length > 0) {
-        setExtractingKeywords(true)
-        try {
-          const extractedKeywords = await extractKeywordsFromRecords(monthlyRecords)
-          setKeywords(extractedKeywords)
-        } catch (err) {
-          console.error('Failed to extract keywords:', err)
-          // 提取关键词失败不影响主流程
-        } finally {
-          setExtractingKeywords(false)
-        }
-      } else {
-        setKeywords([])
-      }
-    } catch (err: any) {
-      // 格式化错误信息，避免显示原始错误对象
-      const errorMessage = err?.message || err?.error?.message || '加载数据失败'
-      setError(errorMessage)
-      console.error('Failed to load monthly records:', err)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   async function handleGenerateSummary() {
     // 先显示月份选择器，默认选择当前查看的月份

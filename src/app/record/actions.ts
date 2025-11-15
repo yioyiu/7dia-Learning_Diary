@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { generateDailySummary } from '@/lib/ai/zhipu'
 import { DailyRecord } from '@/types/record'
+import { Database } from '@/types/database'
 
 export async function saveRecord(date: string, content: string) {
   const supabase = createClient()
@@ -53,19 +54,18 @@ export async function saveRecord(date: string, content: string) {
     }
 
     // 保存原始内容（有意义的内容）
+    const insertData: Database['public']['Tables']['daily_records']['Insert'] = {
+      user_id: user.id,
+      date,
+      content,
+      updated_at: new Date().toISOString(),
+    }
+    
     const { data: record, error: upsertError } = await supabase
       .from('daily_records')
-      .upsert(
-        {
-          user_id: user.id,
-          date,
-          content,
-          updated_at: new Date().toISOString(),
-        },
-        {
-          onConflict: 'user_id,date',
-        }
-      )
+      .upsert(insertData, {
+        onConflict: 'user_id,date',
+      })
       .select()
       .single()
 

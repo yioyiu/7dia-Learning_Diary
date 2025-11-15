@@ -129,11 +129,25 @@ npm run type-check
 npm run lint
 ```
 
+## 部署
+
+由于项目使用了 Server Actions 和 Middleware 等服务端功能，**不能直接部署到 GitHub Pages**（静态托管）。
+
+**推荐使用 Vercel 部署**（免费且支持所有 Next.js 功能）：
+
+1. 访问 [Vercel](https://vercel.com) 并使用 GitHub 账号登录
+2. 导入你的 GitHub 仓库
+3. 配置环境变量
+4. 点击部署，几分钟内完成
+
+详细部署指南请查看 [DEPLOY.md](./DEPLOY.md)
+
 ## 注意事项
 
 1. **认证**：当前版本使用 Supabase Auth，需要先配置用户认证
 2. **AI 调用**：确保 ZHIPU API Key 有效且有足够额度
 3. **数据库**：确保 Supabase 项目已正确配置 RLS 策略
+4. **部署**：推荐使用 Vercel，完全支持 Next.js 的所有功能
 
 ## 许可证
 

@@ -4,7 +4,7 @@
   "description": "AI增强的日记/学习记录工具",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

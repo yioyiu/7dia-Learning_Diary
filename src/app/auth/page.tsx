@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase/client'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
 export default function AuthPage() {
@@ -13,6 +13,8 @@ export default function AuthPage() {
   const [error, setError] = useState<string | null>(null)
   const [message, setMessage] = useState<string | null>(null)
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirectPath = searchParams.get('redirect') || '/record'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -33,7 +35,7 @@ export default function AuthPage() {
         if (data.user) {
           // 等待一下确保 session 已保存
           await new Promise((resolve) => setTimeout(resolve, 500))
-          window.location.href = '/record'
+          window.location.href = redirectPath
         }
       } else {
         // 注册
@@ -49,7 +51,7 @@ export default function AuthPage() {
           // 自动登录
           setTimeout(async () => {
             await new Promise((resolve) => setTimeout(resolve, 500))
-            window.location.href = '/record'
+            window.location.href = redirectPath
           }, 2000)
         }
       }

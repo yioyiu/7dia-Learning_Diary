@@ -39,6 +39,26 @@ export async function middleware(request: NextRequest) {
     await supabase.auth.getSession()
   }
 
+  // 保护需要登录的路由
+  const { pathname } = request.nextUrl
+  const isProtectedRoute = pathname.startsWith('/record') || pathname.startsWith('/review')
+  const isAuthPage = pathname.startsWith('/auth')
+
+  // 如果访问受保护的路由但未登录，重定向到登录页
+  if (isProtectedRoute && !user) {
+    const redirectUrl = request.nextUrl.clone()
+    redirectUrl.pathname = '/auth'
+    redirectUrl.searchParams.set('redirect', pathname)
+    return NextResponse.redirect(redirectUrl)
+  }
+
+  // 如果已登录用户访问登录页，重定向到记录页
+  if (isAuthPage && user) {
+    const redirectUrl = request.nextUrl.clone()
+    redirectUrl.pathname = '/record'
+    return NextResponse.redirect(redirectUrl)
+  }
+
   return supabaseResponse
 }
 

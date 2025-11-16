@@ -50,13 +50,13 @@ export default function RecordPage() {
             <div className="absolute left-1/2 transform -translate-x-1/2 flex gap-4 items-center">
               <Link
                 href="/record"
-                className="text-blue-600 font-medium"
+                className="text-blue-600 font-medium text-xl"
               >
                 记录
               </Link>
               <Link
                 href="/review"
-                className="text-gray-600 hover:text-gray-900"
+                className="text-gray-600 hover:text-gray-900 text-xl"
               >
                 回顾
               </Link>

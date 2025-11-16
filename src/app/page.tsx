@@ -21,7 +21,7 @@ export default function Home() {
         <div className="max-w-2xl w-full text-center space-y-8">
           <h1 className="text-4xl font-bold mb-4">每日记录</h1>
           <p className="text-lg text-gray-600 mb-8">
-            AI增强的日记/学习记录工具
+            学习/想法记录工具
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -31,7 +31,7 @@ export default function Home() {
             >
               <h2 className="text-2xl font-semibold mb-2">📝 记录</h2>
               <p className="text-gray-600">
-                记录今天的学习和想法，AI 自动生成摘要
+                记录今天的学习和想法，自动生成摘要
               </p>
             </Link>
 

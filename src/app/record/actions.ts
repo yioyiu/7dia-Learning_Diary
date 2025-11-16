@@ -86,8 +86,8 @@ export async function saveRecord(date: string, content: string) {
           .then(async (summary) => {
             if (summary) {
               // 更新摘要到数据库
-              const { error: updateError } = await supabase
-                .from('daily_records')
+              const { error: updateError } = await (supabase
+                .from('daily_records') as any)
                 .update({ summary })
                 .eq('id', recordId)
 
@@ -96,8 +96,8 @@ export async function saveRecord(date: string, content: string) {
               }
             } else {
               // 如果AI没有生成摘要，清空之前的摘要
-              const { error: updateError } = await supabase
-                .from('daily_records')
+              const { error: updateError } = await (supabase
+                .from('daily_records') as any)
                 .update({ summary: null })
                 .eq('id', recordId)
 

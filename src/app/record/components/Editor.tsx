@@ -41,10 +41,10 @@ export function Editor({ date, onSave, cachedRecord }: EditorProps) {
 
     let checkCount = 0
     const maxChecks = 20 // 最多检查20次（约1分钟）
-    
+
     summaryCheckIntervalRef.current = setInterval(async () => {
       checkCount++
-      
+
       try {
         const record = await getRecord(date)
         if (record && record.summary) {
@@ -105,15 +105,15 @@ export function Editor({ date, onSave, cachedRecord }: EditorProps) {
       setCurrentRecord(cachedRecord)
       setError(null)
       setShowPreview(false)
-      
+
       // 如果记录有内容但没有摘要，开始检查摘要
-      const hasContent = cachedRecord.content?.trim() && 
+      const hasContent = cachedRecord.content?.trim() &&
         /[\u4e00-\u9fa5a-zA-Z0-9]/.test(cachedRecord.content.trim())
       if (hasContent && !cachedRecord.summary && cachedRecord.id) {
         setGeneratingSummary(true)
         startSummaryCheck(cachedRecord.id)
       }
-      
+
       // 在后台验证缓存是否有效（不阻塞UI）
       async function verifyCache() {
         try {
@@ -123,9 +123,9 @@ export function Editor({ date, onSave, cachedRecord }: EditorProps) {
             if (record.updated_at !== cachedRecord.updated_at || record.content !== cachedRecord.content) {
               setContent(record.content)
               setCurrentRecord(record)
-              
+
               // 检查是否需要开始摘要检查
-              const hasContent = record.content?.trim() && 
+              const hasContent = record.content?.trim() &&
                 /[\u4e00-\u9fa5a-zA-Z0-9]/.test(record.content.trim())
               if (hasContent && !record.summary && record.id) {
                 setGeneratingSummary(true)
@@ -149,12 +149,12 @@ export function Editor({ date, onSave, cachedRecord }: EditorProps) {
           console.error('Failed to verify cache:', error)
         }
       }
-      
+
       // 延迟验证，不阻塞初始渲染
       setTimeout(verifyCache, 100)
       return
     }
-    
+
     // 如果没有缓存，先尝试从 localStorage 恢复草稿
     const draft = localStorage.getItem(`draft-${date}`)
     if (draft) {
@@ -178,9 +178,9 @@ export function Editor({ date, onSave, cachedRecord }: EditorProps) {
           setContent(record.content)
           setCurrentRecord(record)
           setError(null)
-          
+
           // 检查是否需要开始摘要检查
-          const hasContent = record.content?.trim() && 
+          const hasContent = record.content?.trim() &&
             /[\u4e00-\u9fa5a-zA-Z0-9]/.test(record.content.trim())
           if (hasContent && !record.summary && record.id) {
             setGeneratingSummary(true)
@@ -248,7 +248,7 @@ export function Editor({ date, onSave, cachedRecord }: EditorProps) {
       const minHeight = 300 // 最小高度 300px
       const newHeight = Math.min(Math.max(scrollHeight, minHeight), maxHeight)
       textarea.style.height = `${newHeight}px`
-      
+
       // 如果内容超过最大高度，允许滚动
       if (scrollHeight > maxHeight) {
         textarea.style.overflowY = 'auto'
@@ -267,18 +267,18 @@ export function Editor({ date, onSave, cachedRecord }: EditorProps) {
 
   const handleSave = useCallback(async () => {
     if (saving) return // 防止重复保存
-    
+
     setSaving(true)
     setError(null)
 
     try {
       const trimmedContent = content.trim()
       // 检查内容是否为空或仅有空格、符号
-      const hasMeaningfulContent = trimmedContent.length > 0 && 
+      const hasMeaningfulContent = trimmedContent.length > 0 &&
         /[\u4e00-\u9fa5a-zA-Z0-9]/.test(trimmedContent) // 至少包含中文、英文或数字
-      
+
       let record: DailyRecord | null = null
-      
+
       // 如果内容为空或仅有空格/符号，删除记录
       if (!hasMeaningfulContent) {
         deleteRecord(date)
@@ -297,10 +297,10 @@ export function Editor({ date, onSave, cachedRecord }: EditorProps) {
         record = saveRecord(date, content)
         setCurrentRecord(record)
         localStorage.removeItem(`draft-${date}`)
-        
+
         // 通知父组件更新日历和缓存
         onSave?.(record)
-        
+
         // 如果记录有内容但没有摘要，异步生成摘要
         if (!record.summary) {
           setGeneratingSummary(true)
@@ -356,8 +356,8 @@ export function Editor({ date, onSave, cachedRecord }: EditorProps) {
     const dateObj = new Date(date)
     const today = new Date()
     const isToday = isSameDay(date, today)
-    return isToday 
-      ? '今日记录' 
+    return isToday
+      ? '今日记录'
       : `${dateObj.getMonth() + 1}月${dateObj.getDate()}日记录`
   }, [date])
 
@@ -376,7 +376,7 @@ export function Editor({ date, onSave, cachedRecord }: EditorProps) {
       setError('请先保存记录内容，然后再编辑摘要')
       return
     }
-    
+
     // 如果有摘要，使用现有摘要；如果没有，使用空字符串
     setEditingSummary(currentRecord?.summary || '')
     setIsEditingSummary(true)
@@ -391,20 +391,20 @@ export function Editor({ date, onSave, cachedRecord }: EditorProps) {
   // 保存摘要
   const handleSaveSummary = useCallback(async () => {
     if (savingSummary) return
-    
+
     // 如果记录不存在，提示用户先保存内容
     if (!currentRecord?.id) {
       setError('请先保存记录内容，然后再编辑摘要')
       return
     }
-    
+
     setSavingSummary(true)
     setError(null)
 
     try {
       const summaryToSave = editingSummary.trim() || null
       const updatedRecord = updateRecordSummary(date, summaryToSave)
-      
+
       if (updatedRecord) {
         setCurrentRecord(updatedRecord)
         setIsEditingSummary(false)
@@ -432,7 +432,7 @@ export function Editor({ date, onSave, cachedRecord }: EditorProps) {
       const maxHeight = 200
       const newHeight = Math.min(Math.max(scrollHeight, minHeight), maxHeight)
       textarea.style.height = `${newHeight}px`
-      
+
       if (scrollHeight > maxHeight) {
         textarea.style.overflowY = 'auto'
       } else {
@@ -462,7 +462,7 @@ export function Editor({ date, onSave, cachedRecord }: EditorProps) {
       const end = target.selectionEnd
 
       // 在当前选区插入 2 个空格（你可以改成 '\t' 或 4 个空格）
-      const insertText = '  '
+      const insertText = '       '
       const newValue = content.slice(0, start) + insertText + content.slice(end)
       setContent(newValue)
 

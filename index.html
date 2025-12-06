@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI增强的日记/学习记录工具 - 每日记录网页">
+    <title>每日记录网页 - AI增强的日记/学习记录工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin-bottom: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .section h3 {
+            font-size: 1.5rem;
+            color: #764ba2;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .feature-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .tech-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .code-block code {
+            color: #9cdcfe;
+        }
+
+        .code-block .comment {
+            color: #6a9955;
+        }
+
+        .code-block .string {
+            color: #ce9178;
+        }
+
+        ul, ol {
+            margin-left: 2rem;
+            margin-top: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .content {
+                padding: 1.5rem;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📝 每日记录网页</h1>
+            <p>AI增强的日记/学习记录工具</p>
+        </header>
+
+        <div class="content">
+            <section class="section">
+                <h2>✨ 功能特性</h2>
+                <div class="features">
+                    <div class="feature-card">
+                        <h4>📝 每日记录</h4>
+                        <p>支持 Markdown 格式的日记/学习内容输入，实时保存草稿</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🤖 AI 自动总结</h4>
+                        <p>保存时自动生成简短摘要，显示在日历格子中，方便快速回顾</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📊 月度回顾</h4>
+                        <p>基于当月所有记录生成 AI 学习报告，了解学习趋势</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>☁️ 主题词云</h4>
+                        <p>AI 提取关键词，可视化展示学习主题和重点</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>⚡ 智能缓存</h4>
+                        <p>月度总结缓存机制，提升加载速度，优化用户体验</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>💾 云端存储</h4>
+                        <p>使用 Supabase 持久化所有数据，多设备同步访问</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🛠️ 技术栈</h2>
+                <div class="tech-stack">
+                    <span class="tech-badge">Next.js 14</span>
+                    <span class="tech-badge">React 18</span>
+                    <span class="tech-badge">TypeScript</span>
+                    <span class="tech-badge">Tailwind CSS</span>
+                    <span class="tech-badge">Supabase</span>
+                    <span class="tech-badge">ZHIPU AI</span>
+                    <span class="tech-badge">GLM 4.5 FLASH</span>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🚀 快速开始</h2>
+                
+                <h3>方法一：直接使用</h3>
+                <p>访问在线版本：<a href="https://7dia.vercel.app" target="_blank" class="highlight">7dia.vercel.app</a></p>
+
+                <h3>方法二：本地安装</h3>
+                <ol>
+                    <li><strong>安装依赖</strong>
+                        <div class="code-block">
+<span class="comment"># 克隆项目后，安装依赖</span>
+npm install
+                        </div>
+                    </li>
+                    <li><strong>配置环境变量</strong>
+                        <p>复制 <code>env.example</code> 为 <code>.env.local</code> 并填写配置：</p>
+                        <div class="code-block">
+<span class="comment"># Windows</span>
+copy env.example .env.local
+
+<span class="comment"># Linux/Mac</span>
+cp env.example .env.local
+                        </div>
+                        <p>需要配置的变量：</p>
+                        <ul>
+                            <li><code>NEXT_PUBLIC_SUPABASE_URL</code> - Supabase 项目 URL</li>
+                            <li><code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code> - Supabase 匿名密钥</li>
+                            <li><code>SUPABASE_SERVICE_ROLE_KEY</code> - Supabase 服务角色密钥（可选）</li>
+                            <li><code>ZHIPU_API_KEY</code> - ZHIPU AI API 密钥</li>
+                        </ul>
+                    </li>
+                    <li><strong>初始化数据库</strong>
+                        <p>在 Supabase 控制台的 SQL Editor 中执行 <code>supabase-schema.sql</code> 文件中的 SQL 脚本。</p>
+                    </li>
+                    <li><strong>启动开发服务器</strong>
+                        <div class="code-block">
+npm run dev
+                        </div>
+                        <p>打开 <a href="http://localhost:3001" target="_blank">http://localhost:3001</a> 查看应用。</p>
+                    </li>
+                </ol>
+            </section>
+
+            <section class="section">
+                <h2>📖 使用说明</h2>
+                <h3>主要功能</h3>
+                <ul>
+                    <li><strong>记录页面</strong>：选择日期，输入 Markdown 格式的学习内容，AI 自动生成摘要</li>
+                    <li><strong>回顾页面</strong>：查看月度学习总结、关键词词云和统计图表</li>
+                    <li><strong>设置页面</strong>：导出/导入数据，管理本地存储</li>
+                </ul>
+                <h3>Markdown 支持</h3>
+                <p>编辑器支持完整的 Markdown 语法，包括标题、列表、粗体、斜体、代码块、链接等。</p>
+            </section>
+
+            <section class="section">
+                <h2>🔗 相关链接</h2>
+                <div class="links">
+                    <a href="https://github.com" class="btn" target="_blank">GitHub 仓库</a>
+                    <a href="https://7dia.vercel.app" class="btn btn-secondary" target="_blank">在线体验</a>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>© 2024 每日记录网页 | MIT License</p>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">使用 AI 技术增强你的学习记录体验</p>
+        </footer>
+    </div>
+</body>
+</html>
+
